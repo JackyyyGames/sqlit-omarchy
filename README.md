@@ -54,44 +54,15 @@ Statusfarben, Rahmen, Auswahlfarbe und Query-Editor-Farben. Wenn du in
 Omarchy das Theme wechselst, erkennt sqlit das automatisch. Es werden keine
 Omarchy-Dateien verändert und kein Plugin oder Hook benötigt.
 
-Außerhalb von Omarchy bleibt das normale sqlit-Theme-System aktiv. Bei einem
-Theme ohne lesbare `colors.toml` wird ein sicherer Fallback verwendet.
+Außerhalb von Omarchy bleibt das normale Theme-System aktiv. Bei einem Theme
+ohne lesbare `colors.toml` wird ein sicherer Fallback verwendet.
 
-## Updates aus dem Originalprojekt
+## Fehler melden
 
-GitHub prüft täglich das Originalprojekt und kann zusätzlich manuell über
-`Actions → Propose upstream updates → Run workflow` gestartet werden. Wenn es
-neue Commits gibt, wird automatisch ein Pull Request erstellt. Nach Prüfung und
-erfolgreicher CI kannst du ihn in `main` übernehmen.
+Wenn etwas nicht funktioniert, öffne bitte ein
+[Issue](https://github.com/JackyyyGames/sqlit-omarchy/issues) mit deiner
+Omarchy-Version, dem verwendeten Theme und einer kurzen Beschreibung.
 
-Bei einem lokalen Checkout ist das Original als `origin` hinterlegt. Updates
-können alternativ so übernommen werden:
+## Lizenz
 
-```bash
-git fetch origin
-git log HEAD..origin/main
-git merge origin/main
-```
-
-Danach die Omarchy-Änderungen testen und in den Fork pushen:
-
-```bash
-uv run pytest tests/unit/test_omarchy.py
-git push fork main
-```
-
-## Entwicklung
-
-```bash
-git clone https://github.com/JackyyyGames/sqlit-omarchy.git
-cd sqlit-omarchy
-uv sync --group dev
-uv run pytest tests/unit/test_omarchy.py
-uv run ruff check .
-```
-
-## Herkunft und Lizenz
-
-sqlit-omarchy basiert auf [sqlit](https://github.com/Maxteabag/sqlit) und steht
-unter der MIT-Lizenz. Die Omarchy-Anpassungen befinden sich in
-`sqlit/domains/shell/app/omarchy.py` und `theme_manager.py`.
+MIT
