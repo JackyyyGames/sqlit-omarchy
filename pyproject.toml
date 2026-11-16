@@ -32,6 +32,7 @@ dependencies = [
     "keyring>=24.0.0",
     "docker>=7.0.0",
     "sqlparse>=0.5.0",
+    "tomli>=2.0.0; python_version < '3.11'",
 ]
 dynamic = ["version"]
 

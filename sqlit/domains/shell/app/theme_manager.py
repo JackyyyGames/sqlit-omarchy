@@ -21,15 +21,16 @@ from sqlit.shared.core.store import CONFIG_DIR
 
 from .omarchy import (
     DEFAULT_THEME,
+    build_omarchy_theme,
     get_current_theme_name,
     get_matching_textual_theme,
     is_omarchy_installed,
 )
 from .themes import (
     DEFAULT_MODE_COLORS,
+    LIGHT_THEME_NAMES,
     MODE_INSERT_COLOR_VAR,
     MODE_NORMAL_COLOR_VAR,
-    LIGHT_THEME_NAMES,
     SQLIT_TEXTAREA_THEMES,
     SQLIT_THEMES,
 )
@@ -132,8 +133,14 @@ class ThemeManager:
         self.apply_textarea_theme(new_theme)
 
     def apply_omarchy_theme(self) -> None:
+        self._register_omarchy_theme()
         matched_theme = get_matching_textual_theme(set(self._app.available_themes))
         self._app._apply_theme_safe(matched_theme)
+
+    def _register_omarchy_theme(self) -> None:
+        theme = build_omarchy_theme()
+        if theme is not None:
+            self._app.register_theme(theme)
 
     def on_omarchy_theme_change(self) -> None:
         current_name = get_current_theme_name()
@@ -258,16 +265,9 @@ class ThemeManager:
             self._app._apply_theme_safe(saved_theme or DEFAULT_THEME)
             return
 
+        self._register_omarchy_theme()
         matched_theme = get_matching_textual_theme(set(self._app.available_themes))
         self._omarchy_last_theme_name = get_current_theme_name()
-        if (
-            isinstance(saved_theme, str)
-            and saved_theme in self._app.available_themes
-            and saved_theme != matched_theme
-        ):
-            self._app._apply_theme_safe(saved_theme)
-            return
-
         self._app._apply_theme_safe(matched_theme)
         self._start_omarchy_watcher()
 

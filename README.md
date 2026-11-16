@@ -125,6 +125,17 @@ sqlit
 
 The keybindings are shown at the bottom of the screen.
 
+### Omarchy theme support
+
+When running on [Omarchy](https://omarchy.org/), sqlit reads the active
+`~/.config/omarchy/current/theme/colors.toml` palette automatically. The
+background, foreground, accent, status colors, selection, and query-editor
+colors are mapped into sqlit's Textual theme. Switching the Omarchy theme
+while sqlit is open is detected automatically; no restart or manual theme
+selection is required.
+
+On non-Omarchy systems, sqlit keeps its regular theme behavior unchanged.
+
 ### Try it without a database
 
 Want to explore the UI without connecting to a real database? Run with mock data:
