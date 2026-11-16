@@ -2,20 +2,27 @@
   <img src="assets/favorites/logo_sqlit.png" alt="sqlit logo" width="180">
 </p>
 
-<h3 align="center">The lazygit of SQL databases</h3>
+<h2 align="center">sqlit for Omarchy</h2>
 
 <p align="center">
   <em>Connect and query your database from your terminal in seconds.</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Maxteabag/sqlit/stargazers"><img src="https://img.shields.io/github/stars/Maxteabag/sqlit?style=flat&color=yellow" alt="GitHub Stars"></a>
+  <a href="https://github.com/JackyyyGames/sqlit-omarchy/stargazers"><img src="https://img.shields.io/github/stars/JackyyyGames/sqlit-omarchy?style=flat&color=yellow" alt="GitHub Stars"></a>
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
 </p>
 
+> A keyboard-driven SQL terminal UI that automatically follows your active
+> [Omarchy](https://omarchy.org/) theme.
+
+This repository is an Omarchy-focused fork of
+[Maxteabag/sqlit](https://github.com/Maxteabag/sqlit). It keeps sqlit's full
+database workflow and adds native palette synchronization for Omarchy.
+
 <p align="center">
-  <code>pipx install sqlit-tui</code>
+  <code>pipx install git+https://github.com/JackyyyGames/sqlit-omarchy.git</code>
 </p>
 
 <p align="center">
@@ -76,7 +83,7 @@ Automatically finds running database containers. Press 'Enter' to connect, sqlit
 
 **CLI mode:** Execute SQL from the command line
 
-**Themes:** Rose Pine, Tokyo Night, Nord, Gruvbox
+**Themes:** Built-in themes plus automatic Omarchy palette synchronization
 
 **Dependency wizard:** Auto-install missing drivers
 
@@ -101,11 +108,14 @@ sqlit is for the developer who just wants to query their database with a user fr
 ## Installation
 
 ```bash
-# pipx (recommended)
-pipx install sqlit-tui
+# Omarchy fork (recommended for Omarchy users)
+pipx install git+https://github.com/JackyyyGames/sqlit-omarchy.git
 
-# uv
-uv tool install sqlit-tui
+# Or with uv
+uv tool install git+https://github.com/JackyyyGames/sqlit-omarchy.git
+
+# Stable upstream package (without the Omarchy fork changes)
+pipx install sqlit-tui
 
 # pip
 pip install sqlit-tui
@@ -113,7 +123,7 @@ pip install sqlit-tui
 # Arch Linux (AUR)
 yay -S sqlit
 
-# Nix (flake)
+# Nix (upstream flake)
 nix run github:Maxteabag/sqlit
 ```
 
@@ -133,6 +143,18 @@ background, foreground, accent, status colors, selection, and query-editor
 colors are mapped into sqlit's Textual theme. Switching the Omarchy theme
 while sqlit is open is detected automatically; no restart or manual theme
 selection is required.
+
+#### How it works
+
+1. sqlit detects the active theme through Omarchy's `current/theme` symlink.
+2. It reads the theme's `colors.toml` file without changing any Omarchy files.
+3. It maps the palette to the TUI background, text, borders, accents, status
+   colors, selections, and query editor.
+4. A lightweight watcher reapplies the palette when you switch themes.
+
+If a custom theme has no readable `colors.toml`, sqlit uses its normal fallback
+theme. The integration is read-only and does not require an Omarchy plugin,
+hook, or configuration change.
 
 On non-Omarchy systems, sqlit keeps its regular theme behavior unchanged.
 
@@ -300,6 +322,20 @@ sqlit is built with [Textual](https://github.com/Textualize/textual) and inspire
 
 See `CONTRIBUTING.md` for development setup, testing, and CI steps.
 
+### Development
+
+```bash
+git clone https://github.com/JackyyyGames/sqlit-omarchy.git
+cd sqlit-omarchy
+uv sync --group dev
+uv run pytest tests/unit/test_omarchy.py
+uv run ruff check .
+```
+
+The original project is tracked as the `origin`/upstream reference for this
+fork. Omarchy-specific changes should include tests and keep non-Omarchy
+behavior unchanged.
+
 ### Driver Reference
 
 Most of the time you can just run `sqlit` and connect. If a Python driver is missing, `sqlit` will show (and often run) the right install command for your environment.
@@ -350,7 +386,7 @@ If you try to create an SSH connection without these dependencies, sqlit will de
 
 ## Star History
 
-[![Star History Chart](https://star-history.dera.page/svg?repos=Maxteabag/sqlit&type=Date)](https://star-history.dera.page/#Maxteabag/sqlit&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=JackyyyGames/sqlit-omarchy&type=Date)](https://star-history.dera.page/#JackyyyGames/sqlit-omarchy&Date)
 
 ---
 
