@@ -1,0 +1,46 @@
+name: Propose upstream updates
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    name: Check Maxteabag/sqlit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge upstream main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/Maxteabag/sqlit.git
+          git fetch upstream main
+          git checkout -B upstream-sync
+          git merge --no-edit upstream/main
+
+      - name: Open or update an upstream PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/upstream-sync
+          base: main
+          delete-branch: true
+          title: "chore: sync updates from upstream sqlit"
+          commit-message: "chore: sync updates from upstream sqlit"
+          body: |
+            This pull request contains new commits from [Maxteabag/sqlit](https://github.com/Maxteabag/sqlit).
+
+            Please review the changes, especially conflicts with the Omarchy theme integration, before merging.
+
+            CI runs automatically on this pull request.

@@ -59,9 +59,13 @@ Theme ohne lesbare `colors.toml` wird ein sicherer Fallback verwendet.
 
 ## Updates aus dem Originalprojekt
 
-Dieser Fork wird nicht automatisch aktualisiert, wenn das Originalprojekt neue
-Commits erhält. Das Original ist als `origin` hinterlegt. Updates können später
-so übernommen werden:
+GitHub prüft täglich das Originalprojekt und kann zusätzlich manuell über
+`Actions → Propose upstream updates → Run workflow` gestartet werden. Wenn es
+neue Commits gibt, wird automatisch ein Pull Request erstellt. Nach Prüfung und
+erfolgreicher CI kannst du ihn in `main` übernehmen.
+
+Bei einem lokalen Checkout ist das Original als `origin` hinterlegt. Updates
+können alternativ so übernommen werden:
 
 ```bash
 git fetch origin
