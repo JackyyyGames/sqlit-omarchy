@@ -1,6 +1,6 @@
 # Maintainer: JackyyyGames
 pkgname=sqlit-omarchy
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=1
 pkgdesc="SQL terminal UI with automatic Omarchy theme synchronization"
 arch=('any')
@@ -32,7 +32,7 @@ optdepends=(
 )
 makedepends=('python-build' 'python-installer' 'python-hatchling' 'python-hatch-vcs')
 source=("https://github.com/JackyyyGames/sqlit-omarchy/archive/refs/tags/omarchy-v${pkgver}.tar.gz")
-sha256sums=('5982090dd9ffc010f45dbdb40224210a6a41d3f7263df5c467737ecd62aef48b')
+sha256sums=('c1643ddf5d4a3be9cc37857fcd4bc95d2129773a7b93f76b83658b073d697a8a')
 
 build() {
     cd "${pkgname}-omarchy-v${pkgver}"

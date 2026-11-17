@@ -1,6 +1,6 @@
 pkgbase = sqlit-omarchy
 	pkgdesc = SQL terminal UI with automatic Omarchy theme synchronization
-	pkgver = 1.0.2
+	pkgver = 1.0.3
 	pkgrel = 1
 	url = https://github.com/JackyyyGames/sqlit-omarchy
 	arch = any
@@ -29,7 +29,7 @@ pkgbase = sqlit-omarchy
 	provides = sqlit
 	conflicts = sqlit
 	replaces = sqlit
-	source = https://github.com/JackyyyGames/sqlit-omarchy/archive/refs/tags/omarchy-v1.0.2.tar.gz
-	sha256sums = 5982090dd9ffc010f45dbdb40224210a6a41d3f7263df5c467737ecd62aef48b
+	source = https://github.com/JackyyyGames/sqlit-omarchy/archive/refs/tags/omarchy-v1.0.3.tar.gz
+	sha256sums = c1643ddf5d4a3be9cc37857fcd4bc95d2129773a7b93f76b83658b073d697a8a
 
 pkgname = sqlit-omarchy
