@@ -10,6 +10,7 @@ def _activate_theme(monkeypatch, tmp_path: Path, colors: str) -> None:
     current = tmp_path / "current-theme"
     current.symlink_to(theme_dir, target_is_directory=True)
     monkeypatch.setattr(omarchy, "OMARCHY_CURRENT_THEME", current)
+    monkeypatch.setattr(omarchy, "OMARCHY_CURRENT_THEME_NAME", tmp_path / "theme.name")
 
 
 def test_build_omarchy_theme_uses_colors_toml(monkeypatch, tmp_path):
@@ -52,6 +53,7 @@ def test_missing_colors_falls_back_to_default(monkeypatch, tmp_path):
     current = tmp_path / "current-theme"
     current.symlink_to(theme_dir, target_is_directory=True)
     monkeypatch.setattr(omarchy, "OMARCHY_CURRENT_THEME", current)
+    monkeypatch.setattr(omarchy, "OMARCHY_CURRENT_THEME_NAME", tmp_path / "theme.name")
 
     assert omarchy.build_omarchy_theme() is None
     assert omarchy.get_matching_textual_theme({"rose-pine"}) == "rose-pine"

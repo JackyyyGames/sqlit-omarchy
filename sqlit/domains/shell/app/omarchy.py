@@ -4,9 +4,9 @@ Provides automatic theme synchronization with Omarchy's theme system.
 Only activates when Omarchy is detected on the system.
 
 Theme matching strategy:
-1. Get the current Omarchy theme name from the symlink
-2. Try to match it to a built-in Textual theme
-3. If no match, fall back to the default "rose-pine" theme
+1. Read the current Omarchy theme from its state directory
+2. Load the active colors.toml palette
+3. Fall back to the default "rose-pine" theme when Omarchy is unavailable
 """
 
 from __future__ import annotations
@@ -21,9 +21,11 @@ except ModuleNotFoundError:  # pragma: no cover - Python 3.10 compatibility
 
 from textual.theme import Theme
 
-# Omarchy paths
-OMARCHY_CONFIG_DIR = Path.home() / ".config" / "omarchy"
-OMARCHY_CURRENT_THEME = OMARCHY_CONFIG_DIR / "current" / "theme"
+# Omarchy paths. Newer Omarchy versions keep the active theme in state;
+# retain the config path for older installations.
+OMARCHY_CURRENT_THEME = Path.home() / ".local" / "state" / "omarchy" / "current" / "theme"
+OMARCHY_CURRENT_THEME_NAME = Path.home() / ".local" / "state" / "omarchy" / "current" / "theme.name"
+OMARCHY_LEGACY_CURRENT_THEME = Path.home() / ".config" / "omarchy" / "current" / "theme"
 
 # Default theme when no Omarchy match is found
 DEFAULT_THEME = "rose-pine"
@@ -47,8 +49,8 @@ THEME_ALIASES: dict[str, str] = {
 
 
 def is_omarchy_installed() -> bool:
-    """Check if Omarchy is installed by looking for the current theme symlink."""
-    return OMARCHY_CURRENT_THEME.exists()
+    """Check if Omarchy exposes an active theme directory."""
+    return get_current_theme_path() is not None
 
 
 def get_current_theme_path() -> Path | None:
@@ -57,13 +59,14 @@ def get_current_theme_path() -> Path | None:
     Returns:
         Path to the current theme directory, or None if not available.
     """
-    if not OMARCHY_CURRENT_THEME.exists():
-        return None
-
-    try:
-        return OMARCHY_CURRENT_THEME.resolve()
-    except OSError:
-        return None
+    for theme_path in (OMARCHY_CURRENT_THEME, OMARCHY_LEGACY_CURRENT_THEME):
+        if not theme_path.exists():
+            continue
+        try:
+            return theme_path.resolve()
+        except OSError:
+            continue
+    return None
 
 
 def get_current_theme_name() -> str | None:
@@ -72,6 +75,13 @@ def get_current_theme_name() -> str | None:
     Returns:
         Theme name (directory name), or None if not available.
     """
+    try:
+        theme_name = OMARCHY_CURRENT_THEME_NAME.read_text(encoding="utf-8").strip()
+    except OSError:
+        theme_name = ""
+    if theme_name and "/" not in theme_name and theme_name not in {".", ".."}:
+        return theme_name
+
     theme_path = get_current_theme_path()
     if theme_path is None:
         return None
