@@ -135,7 +135,16 @@ class ThemeManager:
     def apply_omarchy_theme(self) -> None:
         self._register_omarchy_theme()
         matched_theme = get_matching_textual_theme(set(self._app.available_themes))
+        theme_changed = self._app.theme != matched_theme
         self._app._apply_theme_safe(matched_theme)
+        if not theme_changed:
+            # Textual skips its reactive watcher when the theme name is
+            # unchanged. The palette object was replaced above, so explicitly
+            # refresh the CSS and theme signal for live Omarchy updates.
+            watch_theme = getattr(self._app, "_watch_theme", None)
+            if callable(watch_theme):
+                watch_theme(matched_theme)
+        self.apply_textarea_theme(matched_theme)
 
     def _register_omarchy_theme(self) -> None:
         theme = build_omarchy_theme()
